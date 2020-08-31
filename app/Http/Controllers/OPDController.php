@@ -781,11 +781,11 @@ class OPDController extends Controller
            $affectedRows = OPD::where('opd_number',  $request->input('myopdnumber'))
             ->update(array(
 
-           'ward_admission_type'     => $request->input('visit_type'),
+           'ward_admission_type'     => $request->input('admission_visit_type'),
            'ward_admission_time'     => Carbon::now(),
-           'billable'     => 'Inpatient',
-           'bed_id'                  => $request->input('ipd_referal_doctor'),
-           'ward_id'                 => $request->input('location')));
+           'billable'                => 'Inpatient',
+           'bed_id'                  => $request->input('bed_number'),
+           'ward_id'                 => $request->input('ward_name')));
 
 
             $care_provider = $request->input('myaccounttype');
@@ -797,75 +797,75 @@ class OPDController extends Controller
 
                     if($care_provider=='Glico Health Care')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('glico');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('glico');
                          
                        }
 
                      elseif($care_provider=='Glico Tpa Barclays')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('glico');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('glico');
                          
                        }
 
                        elseif($care_provider=='Glico Tpa Absa')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('glico');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('glico');
                          
                        }
 
                     elseif($care_provider=='Cosmopolitan Health Insurance')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('cosmopolitan');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('cosmopolitan');
                          
                        }
 
 
                      elseif($care_provider=='Premier Mutual Health')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('premier');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('premier');
                          
                        }
 
 
                      elseif($care_provider=='Acacia Health Insurance')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('acacia');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('acacia');
                          
                        }
 
                         elseif($care_provider=='Apex Health Insurance')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('apex');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('apex');
                          
                        }
 
                       elseif($care_provider=='Metropolitan Health Insurance')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('metropolitan');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('metropolitan');
                          
                        }
 
                        elseif($care_provider=='Nationwide Mutual Insurance')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('nationwide');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('nationwide');
                          
                        }
 
                         elseif($care_provider=='Universal Health Insurance')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('universal');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('universal');
                          
                        }
 
                        elseif($care_provider=='Phoenix Health Insurance')
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('phoenix');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('phoenix');
                          
                        }
 
                        else
                        {
-                         $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('insurance');
+                         $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('insurance');
                           
                        }
 
@@ -873,19 +873,19 @@ class OPDController extends Controller
                       
                     break;
                 case 'Corporate':
-                     $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('corporate');
+                     $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('corporate');
                      
                     break;
                 case 'Private':
-                     $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('walkin');
+                     $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('walkin');
                       
                     break;
                 case 'Walkin':
-                     $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('walkin');
+                     $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('walkin');
                       
                     break;
                 case 'Gratis':
-                     $service_charge = ServiceCharge::where('type',$request->input('consultation_type'))->value('charge');
+                     $service_charge = ServiceCharge::where('type',$request->input('admisson_service'))->value('charge');
                       
                     break;
            }
@@ -895,7 +895,7 @@ class OPDController extends Controller
            $bill->patient_id           = $request->input('patient_id');
            $bill->visit_id             = $request->input('myopdnumber');
            $bill->fullname             = $request->input('fullname');
-           $bill->item_name            = $request->input('consultation_type');
+           $bill->item_name            = $request->input('admisson_service');
            $bill->quantity             = 1;
            $bill->rate                 = $service_charge;
            $bill->amount               = $service_charge;

@@ -47,10 +47,10 @@
                   <div class="dropdown">
                       <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="feather icon-settings"></i></button>
                       <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">Call</a>
-                        <a class="dropdown-item" href="#">Whatsapp</a>
+                      <a class="dropdown-item"   href="tel:{{$patients[0]->mobile_number  }}">Call</a>
+                        <a class="dropdown-item" href="https://wa.me/233{{ltrim($patients[0]->mobile_number,'0')}}?text=Hello {{ ucwords(strtolower($patients[0]->fullname)) }}." target="_new">Whatsapp</a>
                         <a class="dropdown-item" href="#">Video Call</a>
-                        <a class="dropdown-item" href="#">Print Clinical Note</a>
+                      <a class="dropdown-item" href="/print-visit-summary/{{ $visit_details->opd_number  }}">Print Clinical Note</a>
                         <a class="dropdown-item" href="#">Print Cover Letter</a>
                         <a class="dropdown-item" href="#">Print Excuse Duty</a>
                         <a class="dropdown-item" href="#">Print Treatment  Letter</a>
@@ -92,7 +92,7 @@
                             </li>
                           @endrole
 
-                          @role(['Dentist','System Admin'])
+                          @role(['Dentist'])
                             <li class="nav-item">
                               <a class="nav-link d-flex py-75" id="account-pill-extraoral" data-toggle="pill" href="#account-vertical-extraoral" aria-expanded="false">
                                   <i class="feather icon-grid mr-50 font-medium-3"></i>
@@ -148,7 +148,7 @@
                               </a>
                           </li>
 
-                          @role(['Ophthalmologist','System Admin'])
+                          @role(['Ophthalmologist'])
                           <li class="nav-item">
                             <a class="nav-link d-flex py-75" id="account-pill-ocular" data-toggle="pill" href="#account-vertical-ocular" aria-expanded="false">
                                 <i class="feather icon-eye-off mr-50 font-medium-3"></i>
@@ -174,7 +174,7 @@
 
 
                         
-                         @role(['Gynaecologist','System Admin'])
+                         @role(['Gynaecologist'])
                          <li class="nav-item">
                           <a class="nav-link d-flex py-75" id="account-pill-antenatal" data-toggle="pill" href="#account-vertical-antenatal" aria-expanded="false">
                               <i class="feather icon-share-2 mr-50 font-medium-3"></i>
@@ -251,9 +251,9 @@
                       </li>
 
                       <li class="nav-item">
-                        <a class="nav-link d-flex py-75" id="account-pill-appointment" data-toggle="pill" href="#account-vertical-appointment" aria-expanded="false">
+                        <a class="nav-link d-flex py-75" id="account-pill-admission" data-toggle="pill" href="#account-vertical-admission" aria-expanded="false">
                           <i class="feather icon-log-in mr-50 text-danger font-medium-3"></i>
-                            Admit Patient
+                            Admit Patient to Ward
                         </a>
                       </li>
 
@@ -323,12 +323,13 @@
                                                     </fieldset>
                                                 </div>
                                                   <div class="col-12">
+                                                   
                                                     <fieldset class="form-label-group">
-                                                      {{-- <textarea class="form-control text-uppercase" id="presentingcomplaint" name="presentingcomplaint" rows="3" placeholder="History of Presenting Illness">{!! $mycomplaints->presenting !!}</textarea>
-                                                      <label for="label-textarea">History of Presenting Illness</label> --}}
-                                                      <div id="presentingcomplaint" name="presentingcomplaint" class="form-control" style="overflow:scroll;height:100px;max-height:150px" contenteditable="true"> {!! $mycomplaints->presenting !!} </div>
+                                                      <textarea class="form-control text-uppercase" id="presentingcomplaint" name="presentingcomplaint" rows="3" placeholder="History of Presenting Illness">{!! $mycomplaints->presenting !!}</textarea>
+                                                      
+                                                      {{-- <div id="presentingcomplaint" name="presentingcomplaint" class="form-control" placeholder="History of Presenting Illness" style="overflow:scroll;height:100px;max-height:150px" contenteditable="true"> {!! $mycomplaints->presenting !!} </div> --}}
 
-
+                                                      <label for="label-textarea">History of Presenting Illness</label> 
                                                   </fieldset>
                                                   </div>
                                                   
@@ -382,115 +383,109 @@
                                     <div class="tab-content pt-1">
                                         <div class="tab-pane active" id="home-just" role="tabpanel" aria-labelledby="home-tab-justified">
                                           <p>
-                                            <code>A narrative or record of past events and circumstances that are or may be relevant to a patient's current state of health. Informally, an account of past diseases, injuries, treatments, and other strictly medical facts</code>
+                                            {{-- <code>A narrative or record of past events and circumstances that are or may be relevant to a patient's current state of health. Informally, an account of past diseases, injuries, treatments, and other strictly medical facts</code> --}}
                                         </p>
                                           <div class="row">
-                                            <div class="col-md-4 col-12 font-small-2">
+                                            <div class="col-md-4 col-12 font-small-3">
+                                              <label for="medical_history" class="badge badge-pill badge-light-primary mr-1 mb-1">Medical History</label>
                                                 <div class="form-label-group">
                                                   <select name="medical_history[]" id="medical_history" class="select2-size-sm form-control" multiple="multiple">
-                                                    <option value="{{ $myhistories->medical_history }}" selected > {{ $myhistories->medical_history }} </option>
+                                                    <option value="{{ $myhistories->medical_history }}" @if($myhistories->medical_history) selected @else @endif> {{ $myhistories->medical_history }} </option>
                                                     @foreach($pastmedicalhx as $pastmedicalhx)
                                                     <option  value="{{ $pastmedicalhx->type }}">{{ $pastmedicalhx->type }}</option>
                                                     @endforeach
                                                    </select> 
-                                                    <label for="medical_history">Medical History</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 col-12 font-small-2">
+                                            <div class="col-md-4 col-12 font-small-3">
+                                              <label for="family_history" class="badge badge-pill badge-light-primary mr-1 mb-1">Family History</label>
                                                 <div class="form-label-group">
                                                   <select name="family_history[]" id="family_history" class="select2-size-sm form-control" multiple="multiple">
-                                                    <option value="{{ $myhistories->family_history }}" selected > {{ $myhistories->family_history }}</option>
+                                                    <option value="{{ $myhistories->family_history }}" @if($myhistories->family_history) selected @else @endif > {{ $myhistories->family_history }}</option>
                                                     @foreach($familyhx as $familyhx)
                                                     <option  value="{{ $familyhx->type }}">{{ $familyhx->type }}</option>
                                                     @endforeach
                                                    </select>
-                                                    <label for="family_history">Family History</label>
+                                                    
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 col-12 font-small-2">
+                                            <div class="col-md-4 col-12 font-small-3">
+                                              <label for="city-column" class="badge badge-pill badge-light-primary mr-1 mb-1">Social History</label>
                                                 <div class="form-label-group">
                                                   <select name="social_history[]" id="social_history" class="select2-size-sm form-control" multiple="multiple">
-                                                    <option value="{{ $myhistories->social_history }}" selected >  {{ $myhistories->social_history }} </option>
+                                                    <option value="{{ $myhistories->social_history }}" @if($myhistories->social_history) selected @else @endif >  {{ $myhistories->social_history }} </option>
                                                     @foreach($socialhx as $socialhx)
                                                     <option  value="{{ $socialhx->type }}">{{ $socialhx->type }}</option>
                                                     @endforeach
                                                     </select>  
-                                                    <label for="city-column">Social History</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 col-12 font-small-2">
+                                            <div class="col-md-4 col-12 font-small-3">
+                                              <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Vaccinnation</label>
                                                 <div class="form-label-group">
                                                   <select name="vaccinations_history[]" id="vaccinations_history" class="select2-size-sm form-control" multiple="multiple">
-                                                    <option value="{{ $myhistories->vaccinations_history }}" selected > {{ $myhistories->vaccinations_history }} </option>
+                                                    <option value="{{ $myhistories->vaccinations_history }}" @if($myhistories->vaccinations_history) selected @else @endif> {{ $myhistories->vaccinations_history }} </option>
                                                     @foreach($vacinnationhx as $vacinnationhx)
                                                     <option  value="{{ $vacinnationhx->type }}">{{ $vacinnationhx->type }}</option>
                                                     @endforeach
                                                     </select>  
-                                                    <label for="country-floating">Vaccinnation</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 col-12 font-small-2">
+                                            <div class="col-md-4 col-12 font-small-3">
+                                              <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Drug History</label>
                                               <div class="form-label-group">
                                                 <select name="drug_history[]" id="drug_history" class="select2-size-sm form-control" multiple="multiple">
-                                                  <option value="{{ $myhistories->drug_history }}" selected > {{ $myhistories->drug_history }} </option>
+                                                  <option value="{{ $myhistories->drug_history }}" @if($myhistories->drug_history) selected @else @endif> {{ $myhistories->drug_history }} </option>
                                                   @foreach($medicationhx as $medicationhx)
                                                   <option  value="{{ $medicationhx->type }}">{{ $medicationhx->type }}</option>
                                                   @endforeach
                                                   </select>
-                                                  <label for="country-floating">Drug History</label>
                                               </div>
                                            </div>
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Surgical History</label>
                                             <div class="form-label-group">
                                               <select name="surgical_history[]" id="surgical_history" class="select2-size-sm form-control" multiple="multiple">
-                                                <option value="{{ $myhistories->surgical_history }}" selected > {{ $myhistories->surgical_history }}</option>
+                                                <option value="{{ $myhistories->surgical_history }}" @if($myhistories->surgical_history) selected @else @endif> {{ $myhistories->surgical_history }}</option>
                                                 @foreach($surgicalhx as $surgicalhx)
                                                 <option  value="{{ $surgicalhx->type }}">{{ $surgicalhx->type }}</option>
                                                 @endforeach
                                                 </select> 
-                                                <label for="country-floating">Surgical History</label>
                                             </div>
                                          </div>
-                                         <div class="col-md-4 col-12 font-small-2">
+                                         <div class="col-md-4 col-12 font-small-3">
+                                          <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Reproductive History</label>
                                           <div class="form-label-group">
                                             <select name="reproductive_history[]" id="reproductive_history" class="select2-size-sm form-control" multiple="multiple">
-                                              <option value="{{ $myhistories->reproductive_history }}" selected > {{ $myhistories->reproductive_history }} </option>
+                                              <option value="{{ $myhistories->reproductive_history }}" @if($myhistories->reproductive_history) selected @else @endif > {{ $myhistories->reproductive_history }} </option>
                                               @foreach($reproductivehx as $reproductivehx)
                                               <option  value="{{ $reproductivehx->type }}">{{ $reproductivehx->type }}</option>
                                               @endforeach
-                                              </select>  
-                                              <label for="country-floating">Reproductive History</label>
+                                              </select> 
                                           </div>
                                        </div>
-                                       <div class="col-md-4 col-12 font-small-2">
+                                       <div class="col-md-4 col-12 font-small-3">
+                                        <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Allegy</label>
                                         <div class="form-label-group">
                                           <select name="allergy[]" id="allergy" class="select2-size-sm form-control" multiple="multiple">
-                                            <option value="{{ $myhistories->allergy }}" selected > {{ $myhistories->allergy }} </option>
+                                            <option value="{{ $myhistories->allergy }}" @if($myhistories->allergy) selected @else @endif> {{ $myhistories->allergy }} </option>
                                             @foreach($allergichx as $allergichx)
                                             <option  value="{{ $allergichx->type }}">{{ $allergichx->type }}</option>
                                             @endforeach
                                             </select>  
-                                            <label for="country-floating">Allegy</label>
                                         </div>
                                      </div>
 
-                                   <div class="col-md-4 col-12 font-small-2">
+                                   <div class="col-md-4 col-12 font-small-3">
+                                    <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Recent Drug History</label>
                                     <div class="form-label-group">
                                       <select name="drug_history_recent[]" id="drug_history_recent" class="select2-size-sm form-control" multiple="multiple">
-                                        <option value="{{ $myhistories->drug_history_recent }}" selected > {{ $myhistories->drug_history_recent }} </option>
+                                        <option value="{{ $myhistories->drug_history_recent }}" @if($myhistories->drug_history_recent) selected @else @endif> {{ $myhistories->drug_history_recent }} </option>
                                         </select>  
-                                        <label for="country-floating">Recent Drug History</label>
+                                        
                                     </div>
                                  </div>
 
-                                 <div class="col-md-4 col-12 font-small-2">
-                                  <div class="form-label-group">
-                                     <select name="drug_history_recent2[]" id="drug_history_recent2" class="select2-size-sm form-control" multiple="multiple">
-                                      {{-- <option value="{{ $myhistories->drug_history_recent }}" selected > {{ $myhistories->drug_history_recent }} </option> --}}
-                                      </select>  
-                                      <label for="country-floating">Recent Drug History</label>
-                                  </div>
-                               </div>
 
 
                                    
@@ -501,200 +496,200 @@
                                         <div class="tab-pane" id="profile-just" role="tabpanel" aria-labelledby="profile-tab-justified">
                                           <div class="row">
     
-                                            <div class="col-md-4 col-12 font-small-2">
+                                            <div class="col-md-4 col-12 font-small-3">
+                                              <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Constitutional</label>
                                               <div class="form-label-group">
                                                   <select name="ros_constitutional[]" id="ros_constitutional" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->general }}" selected > {{ $myros->general }} </option>
+                                                      <option value="{{ $myros->general }}" @if($myros->general) selected @else @endif > {{ $myros->general }} </option>
                                                       @foreach($ros_constitutional as $ros_constitutional)
                                                       <option  value="{{ $ros_constitutional->type }}">{{ $ros_constitutional->type }}</option>
                                                       @endforeach
                                                       </select>    
-                                                  <label for="country-floating">Constitutional</label>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Skin</label>
                                               <div class="form-label-group">
                                                   <select name="ros_skin[]" id="ros_skin" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->skin }}" selected >  {{ $myros->skin }} </option>
+                                                      <option value="{{ $myros->skin }}" @if($myros->skin) selected @else @endif >  {{ $myros->skin }} </option>
                                                       @foreach($ros_skin as $ros_skin)
                                                       <option  value="{{ $ros_skin->type }}">{{ $ros_skin->type }}</option>
                                                       @endforeach
-                                                  </select>    
-                                                  <label for="country-floating">Skin</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Head</label>
                                               <div class="form-label-group">
                                                   <select name="ros_head[]" id="ros_head" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->head }}" selected > {{ $myros->head }} </option>
+                                                      <option value="{{ $myros->head }}" @if($myros->head) selected @else @endif > {{ $myros->head }} </option>
                                                       @foreach($ros_head as $ros_head)
                                                       <option  value="{{ $ros_head->type }}">{{ $ros_head->type }}</option>
                                                       @endforeach
-                                                  </select>    
-                                                  <label for="country-floating">Head</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Eyes</label>
                                               <div class="form-label-group">
                                                   <select name="ros_eyes[]" id="ros_eyes" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->eyes }}" selected >  {{ $myros->eyes }} </option>
+                                                      <option value="{{ $myros->eyes }}" @if($myros->eyes) selected @else @endif >  {{ $myros->eyes }} </option>
                                                       @foreach($ros_eyes as $ros_eyes)
                                                       <option  value="{{ $ros_eyes->type }}">{{ $ros_eyes->type }}</option>
                                                       @endforeach
-                                                  </select>    
-                                                  <label for="country-floating">Eyes</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Ears</label>
                                               <div class="form-label-group">
                                                   <select name="ros_ears[]" id="ros_ears" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->ears }}" selected > {{ $myros->ears }} </option>
+                                                      <option value="{{ $myros->ears }}" @if($myros->ears) selected @else @endif > {{ $myros->ears }} </option>
                                                       @foreach($ros_ears as $ros_ears)
                                                       <option  value="{{ $ros_ears->type }}">{{ $ros_ears->type }}</option>
                                                       @endforeach
-                                                  </select>     
-                                                  <label for="country-floating">Ears</label>
+                                                  </select>  
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Nose</label>
                                               <div class="form-label-group">
                                                   <select name="ros_nose[]" id="ros_nose" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->nose }}" selected > {{ $myros->nose }} </option>
+                                                      <option value="{{ $myros->nose }}" @if($myros->nose) selected @else @endif > {{ $myros->nose }} </option>
                                                       @foreach($ros_nose as $ros_nose)
                                                       <option  value="{{ $ros_nose->type }}">{{ $ros_nose->type }}</option>
                                                       @endforeach
-                                                  </select>      
-                                                  <label for="country-floating">Nose</label>
+                                                  </select>  
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Throat</label>
                                               <div class="form-label-group">
                                                   <select name="ros_throat[]" id="ros_throat" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->throat }}" selected >{{ $myros->throat }} </option>
+                                                      <option value="{{ $myros->throat }}" @if($myros->throat) selected @else @endif >{{ $myros->throat }} </option>
                                                       @foreach($ros_throat as $ros_throat)
                                                       <option  value="{{ $ros_throat->type }}">{{ $ros_throat->type }}</option>
                                                       @endforeach
-                                                      </select>      
-                                                  <label for="country-floating">Throat</label>
+                                                      </select>  
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Respiratory</label>
                                               <div class="form-label-group">
                                                   <select name="ros_respiratory[]" id="ros_respiratory" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->respiratory }}" selected > {{ $myros->respiratory }} </option>
+                                                      <option value="{{ $myros->respiratory }}" @if($myros->respiratory) selected @else @endif > {{ $myros->respiratory }} </option>
                                                       @foreach($ros_respiratory as $ros_respiratory)
                                                       <option  value="{{ $ros_respiratory->type }}">{{ $ros_respiratory->type }}</option>
                                                       @endforeach
-                                                  </select>     
-                                                  <label for="country-floating">Respiratory</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
                                           
-                                          <div class="col-md-4 col-12 font-small-2">
+                                          <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Cardiovascular</label>
                                               <div class="form-label-group">
                                                   <select name="ros_cardiovasular[]" id="ros_cardiovasular" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->cardiovascular }}" selected > {{ $myros->cardiovascular }} </option>
+                                                      <option value="{{ $myros->cardiovascular }}" @if($myros->cardiovascular) selected @else @endif > {{ $myros->cardiovascular }} </option>
                                                       @foreach($ros_cardiovasular as $ros_cardiovasular)
                                                       <option  value="{{ $ros_cardiovasular->type }}">{{ $ros_cardiovasular->type }}</option>
                                                       @endforeach
-                                                  </select>    
-                                              <label for="country-floating">Cardiovascular</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Gynecologic</label>
                                               <div class="form-label-group">
                                                   <select name="ros_gynecology[]" id="ros_gynecology" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->gynecologic }}" selected >{{ $myros->gynecologic }} </option>
+                                                      <option value="{{ $myros->gynecologic }}" @if($myros->gynecologic) selected @else @endif >{{ $myros->gynecologic }} </option>
                                                       @foreach($ros_gynecology as $ros_gynecology)
                                                       <option  value="{{ $ros_gynecology->type }}">{{ $ros_gynecology->type }}</option>
                                                       @endforeach
-                                                  </select>      
-                                              <label for="country-floating">Gynecologic</label>
+                                                  </select> 
                                               </div>
                                            </div>
                                           
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Genitourinary</label>
                                               <div class="form-label-group">
                                                   <select name="ros_genitourinary[]" id="ros_genitourinary" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->genitourinary }}" selected> {{ $myros->genitourinary }} </option>
+                                                      <option value="{{ $myros->genitourinary }}" @if($myros->genitourinary) selected @else @endif> {{ $myros->genitourinary }} </option>
                                                       @foreach($ros_genitourinary as $ros_genitourinary)
                                                       <option  value="{{ $ros_genitourinary->type }}">{{ $ros_genitourinary->type }}</option>
                                                       @endforeach
-                                                  </select>       
-                                              <label for="country-floating">Genitourinary</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">endocrine</label>
                                               <div class="form-label-group">
                                                   <select name="ros_endocrine[]" id="ros_endocrine" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->endocrine }}" selected > {{ $myros->endocrine }} </option>
+                                                      <option value="{{ $myros->endocrine }}" @if($myros->endocrine) selected @else @endif > {{ $myros->endocrine }} </option>
                                                       @foreach($ros_endocrine as $ros_endocrine)
                                                       <option  value="{{ $ros_endocrine->type }}">{{ $ros_endocrine->type }}</option>
                                                       @endforeach
-                                                      </select>        
-                                              <label for="country-floating">Endocrine</label>
+                                                      </select>
                                               </div>
                                            </div>
                                           
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Musculoskeletal</label>
                                               <div class="form-label-group">
                                                   <select name="ros_musculoskeletal[]" id="ros_musculoskeletal" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->musculoskeletal }}" selected > {{ $myros->musculoskeletal }} </option>
+                                                      <option value="{{ $myros->musculoskeletal }}" @if($myros->musculoskeletal) selected @else @endif > {{ $myros->musculoskeletal }} </option>
                                                       @foreach($ros_musculoskeletal as $ros_musculoskeletal)
                                                       <option  value="{{ $ros_musculoskeletal->type }}">{{ $ros_musculoskeletal->type }}</option>
                                                       @endforeach
-                                                  </select>        
-                                              <label for="country-floating">Musculoskeletal</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Peripheral Vascular</label>
                                               <div class="form-label-group">
                                                   <select name="ros_peripheral_vascular[]" id="ros_peripheral_vascular" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->peripheral_vascular }}" selected > {{ $myros->peripheral_vascular }} </option>
+                                                      <option value="{{ $myros->peripheral_vascular }}" @if($myros->peripheral_vascular) selected @else @endif > {{ $myros->peripheral_vascular }} </option>
                                                       @foreach($ros_peripheral_vascular as $ros_peripheral_vascular)
                                                       <option  value="{{ $ros_peripheral_vascular->type }}">{{ $ros_peripheral_vascular->type }}</option>
                                                       @endforeach
-                                                  </select>         
-                                              <label for="country-floating">Peripheral Vascular</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Hematology</label>
                                               <div class="form-label-group">
                                                   <select name="ros_hematology[]" id="ros_hematology" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->hematology }}" selected > {{ $myros->hematology }} </option>
+                                                      <option value="{{ $myros->hematology }}" @if($myros->hematology) selected @else @endif > {{ $myros->hematology }} </option>
                                                       @foreach($ros_hematology as $ros_hematology)
                                                       <option  value="{{ $ros_hematology->type }}">{{ $ros_hematology->type }}</option>
                                                       @endforeach
-                                                  </select>          
-                                              <label for="country-floating">Hematology</label>
+                                                  </select> 
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Neuropsychiatric</label>
                                               <div class="form-label-group">
                                                   <select name="ros_neuropsychiatric[]" id="ros_neuropsychiatric" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="{{ $myros->neuro }}" selected > {{ $myros->neuro }} </option>
+                                                      <option value="{{ $myros->neuro }}" @if($myros->neuro) selected @else @endif > {{ $myros->neuro }} </option>
                                                       @foreach($ros_neuropsychiatric as $ros_neuropsychiatric)
                                                       <option  value="{{ $ros_neuropsychiatric->type }}">{{ $ros_neuropsychiatric->type }}</option>
                                                       @endforeach
-                                                  </select>          
-                                              <label for="country-floating">Neuropsychiatric</label>
+                                                  </select>   
                                               </div>
                                            </div>
                                         
@@ -709,146 +704,146 @@
                                           </p>
 
                                            <div class="row">
-                                            <div class="col-md-4 col-12 font-small-2">
+                                            <div class="col-md-4 col-12 font-small-3">
+                                              <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">General</label>
                                               <div class="form-label-group">
                                                   <select name="pe_general[]" id="pe_general" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_general }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_general }}@endforeach </option>
+                                                      <option value="{{ $mype->pe_general }}" @if($mype->pe_general) selected @else @endif> {{ $mype->pe_general }} </option>
                                                       @foreach($pe_constitutional as $pe_constitutional)
                                                       <option  value="{{ $pe_constitutional->type }}">{{ $pe_constitutional->type }}</option>
                                                       @endforeach 
-                                                  </select>        
-                                              <label for="country-floating">General</label>
+                                                  </select> 
                                               </div>
                                            </div>
                                           
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">HEENT</label>
                                               <div class="form-label-group">
                                                   <select name="pe_HEENT[]" id="pe_HEENT" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_HEENT }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_HEENT }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_HEENT }}" @if($mype->pe_HEENT) selected @else @endif> {{ $mype->pe_HEENT }} </option>
                                                       @foreach($pe_HEENT as $pe_HEENT)
                                                       <option  value="{{ $pe_HEENT->type }}">{{ $pe_HEENT->type }}</option>
                                                       @endforeach 
-                                                  </select>        
-                                              <label for="country-floating">HEENT</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Neck</label>
                                               <div class="form-label-group">
                                                   <select name="pe_neck[]" id="pe_neck" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_neck }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_neck }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_neck }}" @if($mype->pe_neck) selected @else @endif> {{ $mype->pe_neck }} </option>
                                                       @foreach($pe_neck as $pe_neck)
                                                       <option  value="{{ $pe_neck->type }}">{{ $pe_neck->type }}</option>
                                                       @endforeach 
-                                                  </select>        
-                                              <label for="country-floating">Neck</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Skin</label>
                                               <div class="form-label-group">
                                                   <select name="pe_skin[]" id="pe_skin" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_skin }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_skin }}@endforeach </option>
-                                                  </select>          
-                                              <label for="country-floating">Skin</label>
+                                                    <option value="{{ $mype->pe_skin }}" @if($mype->pe_skin) selected @else @endif> {{ $mype->pe_skin }} </option>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Lungs</label>
                                               <div class="form-label-group">
                                                   <select name="pe_respiratory[]" id="pe_respiratory" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_respiratory }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_respiratory }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_respiratory }}" @if($mype->pe_respiratory) selected @else @endif> {{ $mype->pe_respiratory }} </option>
                                                       @foreach($pe_respiratory as $pe_respiratory)
                                                       <option  value="{{ $pe_respiratory->type }}">{{ $pe_respiratory->type }}</option>
                                                       @endforeach 
-                                                  </select>          
-                                              <label for="country-floating">Lungs</label>
+                                                  </select> 
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Heart</label>
                                               <div class="form-label-group">
                                                   <select name="pe_heart[]" id="pe_heart" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_heart }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_heart }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_heart }}" @if($mype->pe_heart) selected @else @endif> {{ $mype->pe_heart }} </option>
                                                       @foreach($pe_heart as $pe_heart)
                                                       <option  value="{{ $pe_heart->type }}">{{ $pe_heart->type }}</option>
                                                       @endforeach 
-                                                  </select>           
-                                              <label for="country-floating">Heart</label>
+                                                  </select> 
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Abdomen</label>
                                               <div class="form-label-group">
                                                   <select name="pe_abdominal[]" id="pe_abdominal" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_abdominal }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_abdominal }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_abdominal }}" @if($mype->pe_abdominal) selected @else @endif> {{ $mype->pe_abdominal }} </option>
                                                       @foreach($pe_abdominal as $pe_abdominal)
                                                       <option  value="{{ $pe_abdominal->type }}">{{ $pe_abdominal->type }}</option>
                                                       @endforeach 
-                                                  </select>            
-                                              <label for="country-floating">Abdomen</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Extremities</label>
                                               <div class="form-label-group">
                                                   <select name="pe_extremities[]" id="pe_extremities" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_extremities }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_extremities }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_extremities }}" @if($mype->pe_extremities) selected @else @endif> {{ $mype->pe_extremities }} </option>
                                                       @foreach($pe_extremities as $pe_extremities)
                                                       <option  value="{{ $pe_extremities->type }}">{{ $pe_extremities->type }}</option>
                                                       @endforeach 
-                                                  </select>            
-                                              <label for="country-floating">Extremities</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">CNS</label>
                                               <div class="form-label-group">
                                                   <select name="pe_cns[]" id="pe_cns" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_cns }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_cns }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_cns }}" @if($mype->pe_cns) selected @else @endif> {{ $mype->pe_cns }} </option>
                                                       @foreach($pe_neuropsychiatric as $pe_neuropsychiatric)
                                                       <option  value="{{ $pe_neuropsychiatric->type }}">{{ $pe_neuropsychiatric->type }}</option>
                                                       @endforeach 
-                                                  </select>            
-                                              <label for="country-floating">CNS</label>
+                                                  </select> 
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Musculoskeletal</label>
                                               <div class="form-label-group">
                                                   <select name="pe_musculoskeletal[]" id="pe_musculoskeletal" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_musculoskeletal }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_musculoskeletal }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_musculoskeletal }}" @if($mype->pe_musculoskeletal) selected @else @endif> {{ $mype->pe_musculoskeletal }} </option>
                                                       @foreach($pe_musculoskeletal as $pe_musculoskeletal)
                                                       <option  value="{{ $pe_musculoskeletal->type }}">{{ $pe_musculoskeletal->type }}</option>
                                                       @endforeach 
-                                                  </select>             
-                                              <label for="country-floating">Musculoskeletal</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Psychological</label>
                                               <div class="form-label-group">
                                                   <select name="pe_psychological[]" id="pe_psychological" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_psychological }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_psychological }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_psychological }}" @if($mype->pe_psychological) selected @else @endif> {{ $mype->pe_psychological }} </option>
                                                       @foreach($pe_psychological as $pe_psychological)
                                                       <option  value="{{ $pe_psychological->type }}">{{ $pe_psychological->type }}</option>
                                                       @endforeach 
-                                                  </select>             
-                                              <label for="country-floating">Psychological</label>
+                                                  </select>
                                               </div>
                                            </div>
                                           
-                                           <div class="col-md-4 col-12 font-small-2">
+                                           <div class="col-md-4 col-12 font-small-3">
+                                            <label for="country-floating" class="badge badge-pill badge-light-primary mr-1 mb-1">Breast</label>
                                               <div class="form-label-group">
                                                   <select name="pe_breast[]" id="pe_breast" class="select2-size-sm form-control" multiple="multiple">
-                                                      <option value="@foreach($mype as $val) {{ $val->pe_breast }}@endforeach" selected > @foreach($mype as $val) {{ $val->pe_breast }}@endforeach </option>
+                                                    <option value="{{ $mype->pe_breast }}" @if($mype->pe_breast) selected @else @endif> {{ $mype->pe_breast }} </option>
                                                       @foreach($pe_breast as $pe_breast)
                                                       <option  value="{{ $pe_breast->type }}">{{ $pe_breast->type }}</option>
                                                       @endforeach 
-                                                  </select>             
-                                              <label for="country-floating">Breast</label>
+                                                  </select>
                                               </div>
                                            </div>
                                            </div>
@@ -868,7 +863,7 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12 col-12">
                                                                         <fieldset class="form-group">
-                                                                            <textarea class="form-control" id="basicTextarea" rows="3" placeholder=""></textarea>
+                                                                        <textarea class="form-control" id="perspective_comment_doctor" name="perspective_comment_doctor" rows="3" placeholder=""> {{ $mycomplaints->doctors_note }} </textarea>
                                                                         </fieldset>
                                                                     </div>
                                                                 </div>
@@ -2901,7 +2896,7 @@
                                             </div>
                                               <div class="col-md-6 col-12">
                                                   <div class="form-label-group">
-                                                      <input type="text" id="investigation_remark" class="form-control" value="N/A" placeholder="Remarks" name="investigation_remark">
+                                                      <input type="text" id="investigation_remark" class="form-control" value="-" placeholder="Remarks" name="investigation_remark">
                                                       <label for="last-name-column">Remarks</label>
                                                   </div>
                                               </div>
@@ -3025,7 +3020,8 @@
                                                           </div>
                                                           <div class="card-content">
                                                               <div class="card-body">
-                                                                  <p>Add <code>.table-hover-animation</code> to enable a hover stat with animation on table rows within a <code class="highlighter-rouge">&lt;tbody&gt;</code>.</p>
+                                                                  <p>Key: <code> L - Abnormal Low, H - Abnormal High.
+                                                                    </code> Test results relate only to the item tested.</p>
                                                                   <div class="table-responsive">
                                                                       <table id="investigationsResultsTable" class="table table-hover-animation table-striped mb-0 font-small-2" width="60%">
                                                                           <tbody>
@@ -3333,6 +3329,112 @@
                                           </section>
                                       </div>
 
+
+                                      <div class="tab-pane fade" id="account-vertical-admission" role="tabpanel" aria-labelledby="account-pill-admission" aria-expanded="false">
+                                        <section id="multiple-column-form">
+                                          <div class="row match-height">
+                                            <div class="col-12">
+                                              <div class="card">
+                                                 
+                                                <div class="card-content">
+                                                  <div class="card-body">
+                                                    <form class="form" action="POST" action="/create-ipd-opd">
+                                                      <div class="form-body">
+                                                        <div class="row">
+                                                         
+                                                          <div class="col-md-6 col-12">
+                                                            <div class="form-label-group">
+                                                              <select id="title" name="title" rows="3" tabindex="1" data-required="true" data-placeholder="Select appointment type.." class="select2 form-control">
+                                                                <option value="">Select Billing Account</option>
+                                                                @foreach($accounttype as $accounttype)
+                                                                 <option value="{{ $accounttype->type }}">{{ $accounttype->type }}</option>
+                                                                @endforeach 
+                                                               </select>
+                                                            </div>
+                                                          </div>
+                                                          
+                                                          <div class="col-md-6 col-12">
+                                                            <div class="form-label-group">
+                                                              <select id="admission_visit_type" name="admission_visit_type" rows="3" data-required="true" tabindex="1" data-placeholder="Select Admission Type" class="select2 form-control">
+                                                                <option value="">Admission Type</option>
+                                                                <option value="Admission">Admission</option>
+                                                                <option value="Detention">Detention</option>
+                                                              </select>
+                                                            </div>
+                                                          </div>
+
+                                                          <div class="col-md-6 col-12">
+                                                            <div class="form-label-group">
+                                                              <input type="text" class="form-control" id="visit_date" name="visit_date" value="">
+                                                              <label for="country-floating">Admission Date</label>
+                                                            </div>
+                                                          </div>
+
+                                                          <div class="col-md-6 col-12">
+                                                            <div class="form-label-group">
+                                                              <select id="admisson_service" name="admisson_service" rows="3" data-required="true" tabindex="1" data-placeholder="Select Admission Service Type" class="select2 form-control">
+                                                                <option value="">Admission Service</option>
+                                                                  @foreach($ipdservices as $ipd)
+                                                                <option value="{{ $ipd->type }}">{{ ucfirst(trans($ipd->type)) }} </option>
+                                                                  @endforeach
+                                                              </select> 
+                                                            </div>
+                                                          </div>
+
+
+                                                          <div class="col-md-6 col-12">
+                                                            <div class="form-label-group">
+                                                              <select id="ward_id" name="ward_id" rows="3" data-required="true" tabindex="1" data-placeholder="Select Ward Name" class="select2 form-control">
+                                                                <option value="">-- Select Ward --</option>
+                                                                @foreach($wards as $ward)
+                                                                <option value="{{ $ward->ward_type }}">{{  $ward->ward_type }}</option>
+                                                                @endforeach
+                                                              </select> 
+                                                            </div>
+                                                          </div>
+
+                                                          <div class="col-md-6 col-12">
+                                                            <div class="form-label-group">
+                                                              <select id="bed_number" name="bed_number" rows="3" data-required="true" tabindex="1" data-placeholder="Select Bed Number" class="select2 form-control">
+                                                                <option value="">-- Select Bed Number --</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="1">3</option>
+                                                                <option value="2">4</option>
+                                                                <option value="1">5</option>
+                                                                <option value="2">6</option>
+                                                                <option value="1">7</option>
+                                                                <option value="2">8</option>
+                                                                <option value="1">9</option>
+                                                                <option value="2">10</option>
+                                                              </select> 
+                                                            </div>
+                                                          </div>
+                                                        
+                                                        
+                                                          
+                                                           
+                                                          <div class="col-12">
+                                                            <input type="hidden" id="patient_id" name="patient_id" value="{{ $visit_details->patient_id }}">
+                                                            <input type="hidden" id="myopdnumber" name="myopdnumber" value="{{ $visit_details->opd_number }}">
+                                                            <input type="hidden" id="fullname" name="fullname" value="{{ $visit_details->name }}">
+                                                            <input type="hidden" id="myaccounttype" name="myaccounttype" value="{{ $visit_details->payercode }}"> 
+                                                            <input type="hidden" id="mycopayer" name="mycopayer" value="{{ $visit_details->care_provider }}"> 
+                                                            <input type="hidden" name="_token" value="{{ Session::token() }}">
+                                                 
+                                                            <button type="submit" class="btn btn-primary mr-1 mb-1  float-right">Click to Admit</button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </form>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          </section>
+                                      </div>
+
                                       <div class="tab-pane fade" id="account-vertical-referal" role="tabpanel" aria-labelledby="account-pill-referal" aria-expanded="false">
                                       <!-- Floating Label Textarea start -->
                                           <section class="floating-label-textarea">
@@ -3375,8 +3477,8 @@
                                                                   <div class="row">
                                                                       <div class="col-12">
                                                                           <fieldset class="form-label-group">
-                                                                              <textarea class="form-control" name="myreferal" id="myreferal" rows="3" placeholder="Conclusion"></textarea>
-                                                                              <label for="label-textarea">Discharge Note</label>
+                                                                              <textarea class="form-control" name="treatment_plan" id="treatment_plan" rows="6" placeholder="Conclusion"></textarea>
+                                                                              <label for="label-textarea">Conclusion</label>
                                                                           </fieldset>
                                                                       </div>
                                                                   </div>
@@ -3384,16 +3486,38 @@
                                                                   <div class="row">
                                                                     <div class="col-12">
                                                                         <fieldset class="form-label-group">
-                                                                            <textarea class="form-control" name="myreferal" id="myreferal" rows="3" placeholder="Recommendation"></textarea>
+                                                                            <textarea class="form-control" name="treatment_plan_action" id="treatment_plan_action" rows="6" placeholder="Recommendation"></textarea>
                                                                             <label for="label-textarea">Recommendation</label>
                                                                         </fieldset>
                                                                     </div>
                                                                 </div>
-                                                                  <button type="submit" class="btn btn-primary mr-1 mb-1 float-right">Save</button>
+                                                                  <button type="submit" type="button" onclick="addPlan()" class="btn btn-primary mr-1 mb-1 float-right">Save</button>
                                                               </div>
                                                           </div>
                                                       </div>
                                                   </div>
+                                              </div>
+                                          </section>
+
+                                          <section class="panel panel-info">
+                                            <header class="panel-heading font-bold">Discharge History</header>
+                                            <div class="panel-body">
+                                                  <div class="table-responsive">
+                                                    <table id="planTable" class="table table-hover-animation table-striped mb-0 font-small-3">
+                                                        <thead>
+                                                          <tr>
+                                                            <th scope="col">Date</th>
+                                                            <th scope="col">Conclusion</th>
+                                                            <th scope="col">Recommendation</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                          </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                          
+                                                      </tbody>
+                                                  </table>
+                                              </div>
                                               </div>
                                           </section>
                 <!-- Floating Label Textarea end -->
@@ -3532,9 +3656,9 @@
  </script>
 
 
-<script>tinymce.init({
+{{-- <script>tinymce.init({
   selector: '#treatment_plan',
-  height: 400,
+  height: 200,
   menubar: true,
   plugins: [
     'advlist autolink lists link image charmap print preview anchor textcolor',
@@ -3552,7 +3676,7 @@
 
 <script>tinymce.init({
   selector: '#treatment_plan_action',
-  height: 400,
+  height: 200,
   menubar: true,
   plugins: [
     'advlist autolink lists link image charmap print preview anchor textcolor',
@@ -3565,7 +3689,7 @@
   
 
 });
- </script>
+ </script> --}}
 
 
 

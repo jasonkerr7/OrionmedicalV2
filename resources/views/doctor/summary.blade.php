@@ -1,44 +1,102 @@
 @extends('layouts.default')
 @section('content')
 
-          <section class="vbox bg-white">
-           <header class="header b-b b-light hidden-print">
-                <button href="#" class="btn btn-sm btn-info pull-right" onClick="window.print();">Print</button>
-                <p>NOTES</p>
-              </header>
-              
-              <section class="scrollable wrapper" id="summaryreport">
-             <img src="/images/{{ $mycompany->logo }}" width="15%">
-              <h4>{{$mycompany->legal_name }}</h4>
-                  <p><a href="#">{{ $mycompany->email }}</a></p>
-                   <p><a href="#">{{ $mycompany->address }}</a></p>
-                   <p><a href="#">{{ $mycompany->phone }}</a></p>
-                   <p><a href="#">{{ $mycompany->website }}</a></p>
-                  <br>
-              <div class="row">
-                <div class="col-xs-8">
-                  <h6> <strong>{{$mycompany->legal_name }} -   {{ $admission->consultation_type }}   </strong> </h6>
-              
-                 <p>  <strong> Patient Name : </strong> {{ $patients->fullname }}</p>
-                  <p>  <strong> Care Provider : </strong> {{ $admission->care_provider }}</p>
-                 <p>  <strong> Age : </strong> {{ $patients->date_of_birth->age }} year(s)</p>
-                  <p>  <strong> Gender : </strong> {{ $patients->gender }}</p>
-                  <p>  <strong> Contact No.: </strong> {{ $patients->mobile_number }}</p>
-                   <p>  <strong> Examination Time/Date : </strong> {{ date("g:ia\, jS M Y", strtotime($admission->created_on )) }}</p>
-                 
+   <!-- BEGIN: Content-->
+   <div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+        <div class="content-header row">
+            <div class="content-header-left col-md-9 col-12 mb-2">
+                <div class="row breadcrumbs-top">
+                    <div class="col-12">
+                        <h2 class="content-header-title float-left mb-0">Clinical Notes</h2>
+                        <div class="breadcrumb-wrapper col-12">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#">Pages</a>
+                                </li>
+                                <li class="breadcrumb-item active">Notes
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-xs-4 text-right">
-                <img src="data:image/png;base64,{{DNS2D::getBarcodePNG('$admission->opd_number', 'QRCODE')}}" alt="barcode" />     
-                  <p>  <strong> Insurance # : </strong> {{ $patients->insurance_id }}</p>
-                  <p>  <strong> Examination # : </strong> {{ $admission->opd_number }}</p>
-                  <p>  <strong> Patient # : </strong> {{ $patients->patient_id }}</p>
-                  <p>  <strong> Date : </strong> {{ date("jS M Y", strtotime(date('Y-m-d')))  }}</p>  
-                     
+            </div>
+            <div class="content-header-right text-md-right col-md-3 col-12 d-md-block d-none">
+                <div class="form-group breadcrum-right">
+                    <div class="dropdown">
+                        <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="feather icon-settings"></i></button>
+                        <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Chat</a><a class="dropdown-item" href="#">Email</a><a class="dropdown-item" href="#">Calendar</a></div>
+                    </div>
                 </div>
-              </div>    
+            </div>
+        </div>
+        <div class="content-body">
+            <!-- invoice functionality start -->
+            <section class="invoice-print mb-1">
+                <div class="row">
+
+                    <fieldset class="col-12 col-md-5 mb-1 mb-md-0">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Email" aria-describedby="button-addon2">
+                            <div class="input-group-append" id="button-addon2">
+                                <button class="btn btn-outline-primary" type="button">Send Report</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="col-12 col-md-7 d-flex flex-column flex-md-row justify-content-end">
+                        <button class="btn btn-primary btn-print mb-1 mb-md-0"> <i class="feather icon-file-text"></i> Print</button>
+                        <button class="btn btn-outline-primary  ml-0 ml-md-1"> <i class="feather icon-download"></i> Download</button>
+                    </div>
+                </div>
+            </section>
+            <!-- invoice functionality end -->
+            <!-- invoice page -->
+            <section class="card invoice-page">
+                <div id="invoice-template" class="card-body">
+                    <!-- Invoice Company Details -->
+                    
+                    <!-- Invoice Recipient Details -->
+                    <div id="invoice-customer-details" class="row pt-2">
+                        <div class="col-sm-6 col-12 text-left">
+
+                          <h6> <strong> Patient Name : </strong> {{ $patients->fullname }}    </h6>
+                          <div class="company-info my-2">
+                            <p>  <strong> Care Provider : </strong> {{ $admission->care_provider }}</p>
+                            <p>  <strong> Age : </strong> {{ $patients->date_of_birth->age }} year(s)</p>
+                            <p>  <strong> Gender : </strong> {{ $patients->gender }}</p>
+                            <p>  <strong> Contact No.: </strong> {{ $patients->mobile_number }}</p>
+                            <p>  <strong> Examination Time/Date : </strong> {{ date("g:ia\, jS M Y", strtotime($admission->created_on )) }}</p>
+                            <p>  <strong> Insurance # : </strong> {{ $patients->insurance_id }}</p>
+                            <p>  <strong> Examination # : </strong> {{ $admission->opd_number }}</p>
+                            <p>  <strong> Patient # : </strong> {{ $patients->patient_id }}</p>
+                            <p>  <strong> Date : </strong> {{ date("jS M Y", strtotime(date('Y-m-d')))  }}</p>  
+                          </div>
+                          
+                        </div>
+                        <div class="col-sm-6 col-12 text-right">
+                           
+                          <img src="/images/{{ $mycompany->logo }}" width="25%">
+                          <div class="recipient-info my-2">
+                            <h4>{{$mycompany->legal_name }}</h4>
+                            <p><i class="feather icon-mail"></i>{{ $mycompany->email }}</p>
+                             <p>{{ $mycompany->address }}</p>
+                             <p><i class="feather icon-phone"></i>{{ $mycompany->phone }}</p>
+                             <p>{{ $mycompany->website }}</p>
+                          </div>
+                        
+                        </div>
+                    </div>
+                    <!--/ Invoice Recipient Details -->
+
+                    <!-- Invoice Items Details -->
+
+                    <div>
 
                <div class="line"></div>
-               <p style="font-size:12px"> <strong> To whom it May Concern: </strong><br>
+               <p> <strong> To whom it May Concern: </strong><br>
                 I had the privilege to see {{ $patients->fullname }} at the clinic today. @if($patients->gender=='Male') He @else She @endif is a  {{ $patients->date_of_birth->age }}-year-old {{ $patients->gender }} with no significant past medical history who presents to {{$mycompany->legal_name }} as a participant in the <strong> {{ $admission->consultation_type }}  </strong>.
                </p>
 
@@ -54,18 +112,18 @@
                                <ol>
                                 @foreach($myhistories as $history)
                                
-                                @if($history->medical_history == '') @else <li> <small class="block m-t-xs">Past Medical History : <b> {{ strtoupper($history->medical_history)}} </b> </small> </li> @endif
+                                @if($history->medical_history == '') @else <li> Past Medical History : <b> {{ strtoupper($history->medical_history)}} </b>  </li> @endif
                                 
-                                @if($history->family_history == '') @else <li> <small class="block m-t-xs"> Family History : <b>{{strtoupper($history->family_history)}} </b> </small> </li> @endif
+                                @if($history->family_history == '') @else <li>  Family History : <b>{{strtoupper($history->family_history)}} </b> </li> @endif
                               
                               
-                                 @if($history->drug_history == '') @else<li> <small class="block m-t-xs"> Drug History :  <b> Takes {{strtoupper($history->drug_history)}}  </b> </small> </li> @endif
+                                 @if($history->drug_history == '') @else<li>  Drug History :  <b> Takes {{strtoupper($history->drug_history)}}  </b>  </li> @endif
                                 
-                                @if($history->surgical_history == '') @else <li> <small class="block m-t-xs"> Surgical History : <b>{{strtoupper($history->surgical_history)}}</b> </small> </li> @endif
+                                @if($history->surgical_history == '') @else <li>  Surgical History : <b>{{strtoupper($history->surgical_history)}}</b>  </li> @endif
                                
-                                @if($history->allergy == '') @else <li> <small class="block m-t-xs"> Allergies : <b>{{strtoupper($history->allergy)}} </b> </small> </li> @endif
+                                @if($history->allergy == '') @else <li> Allergies : <b>{{strtoupper($history->allergy)}} </b>  </li> @endif
 
-                                 @if($history->vaccinations_history == '') @else <li> <small class="block m-t-xs"> Vacinnations : <b>{{strtoupper($history->vaccinations_history)}} </b> </small> </li> @endif
+                                 @if($history->vaccinations_history == '') @else <li>  Vacinnations : <b>{{strtoupper($history->vaccinations_history)}} </b>  </li> @endif
                               
                                @endforeach
                                </ol>
@@ -75,29 +133,29 @@
                            </div>
                  
             <div class="row">
-                    <div class="col-xs-12">
-                  <p style="font-size:12px">
-                    <span><strong style="font-size:12px">Vitals</strong></span>
+                    <div>
+                  <p>
+                    <span><strong>Vitals</strong></span>
                               <table>
                                @foreach($myvitals as $vital)
                                <tr>
                                <td>
-                                @if($vital->weight == '') @else <li style="font-size:12px"> Weight <label class="badge bg-info"> {{strtoupper($vital->weight)}}  </label></li> @endif
+                                @if($vital->weight == '') @else <li> Weight <label class="badge bg-info"> {{strtoupper($vital->weight)}}  </label></li> @endif
                                 </td>
                                 <td>
-                                @if($vital->height == '') @else <li style="font-size:12px"> Height <label class="badge bg-info"> {{strtoupper($vital->height)}}  </label></li> @endif
+                                @if($vital->height == '') @else <li> Height <label class="badge bg-info"> {{strtoupper($vital->height)}}  </label></li> @endif
                                 </td>
                                 <td>
-                                 @if($vital->bmi == '') @else <li style="font-size:12px"> BMI <label class="badge bg-info"> {{strtoupper($vital->bmi)}}  </label></li> @endif
+                                 @if($vital->bmi == '') @else <li> BMI <label class="badge bg-info"> {{strtoupper($vital->bmi)}}  </label></li> @endif
                                  </td>
                                  <td>
-                                @if($vital->temperature == '') @else <li style="font-size:12px"> Temperature <label class="badge bg-info"> {{strtoupper($vital->temperature)}} ° </label></li> @endif
+                                @if($vital->temperature == '') @else <li> Temperature <label class="badge bg-info"> {{strtoupper($vital->temperature)}} ° </label></li> @endif
                                 </td>
                                 <td>
-                                @if($vital->pulse_rate == '') @else <li style="font-size:12px"> Pulse Rate <label class="badge bg-info"> {{strtoupper($vital->pulse_rate)}}  </label></li> @endif
+                                @if($vital->pulse_rate == '') @else <li> Pulse Rate <label class="badge bg-info"> {{strtoupper($vital->pulse_rate)}}  </label></li> @endif
                                 </td>
                                 <td>
-                                @if($vital->sbp == '') @else <li style="font-size:12px"> Blood Pressure <label class="badge bg-info"> {{strtoupper($vital->sbp)}} / {{$vital->dbp}}  </label></li> @endif
+                                @if($vital->sbp == '') @else <li> Blood Pressure <label class="badge bg-info"> {{strtoupper($vital->sbp)}} / {{$vital->dbp}}  </label></li> @endif
                                 </td>
                                  </tr>
                                @endforeach
@@ -107,8 +165,8 @@
                   </div>
 
                   <div class="row">
-                  <div class="col-xs-12">
-                  <p style="font-size:12px">
+                  <div>
+                  <p>
                      <span><strong>General Examination</strong></span>
                                  @foreach($mype as $physical)
                                 <ol>
@@ -144,25 +202,15 @@
 
               
               <div class="row">
-              <div class="col-xs-12">
-                  <p style="font-size:12px">
+              <div>
+                  <p>
                       <span><strong>Investigations</strong></span>
                        
-{{--                       
 
-                               @foreach($mylabs as $lab)
-                                
-                               <div class="col-lg-4 col-sm-6 thumb-lg">
-                              
-                                 <a><p style="font-size:9px"> {{$lab->investigation}}...<label class="badge bg-default col-lg-4 col-sm-6 thumb-lg"> {{$lab->remark}}  </label></p></a>
-                                 
-                            
-                               </div>
-                               @endforeach --}}
                             <div>
                             <ul class="checkbox-grid">
                              @foreach($mylabs as $key => $lab)
-                              <li><span style="font-size:11px">{{ ++$key }}. {{$lab->investigation}}</span> - <b style="font-size:11px">{{ strtoupper($lab->remark)}} </b></li>
+                              <li><span>{{ ++$key }}. {{$lab->investigation}}</span> - <b>{{ strtoupper($lab->remark)}} </b></li>
                             
                                @endforeach
                           </ul>
@@ -176,7 +224,7 @@
 
             
                   
-                  <p style="font-size:14px">
+                  <p>
                     <span><strong>Diagnosis</strong></span>
                      <p> @foreach($mydiagnosis as $diagnosis) <label > {{ strtoupper($diagnosis->diagnosis) }}, </label> @endforeach </p> 
                   </p> 
@@ -184,8 +232,8 @@
                  
 
                   <div class="row">
-                  <div class="col-xs-12">
-                  <p style="font-size:14px">
+                  <div>
+                  <p>
                     <span><strong>Conclusion</strong></span>
                    
                     <p> @foreach($myplans as $myplan) <label > {!! strtoupper($myplan->plan) !!}, </label> @endforeach.....................................................................................................................................................................................................................................................................................................................................................<br>........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................ </p>      
@@ -196,8 +244,8 @@
                     <br>
 
                    <div class="row">
-                  <div class="col-xs-12">
-                  <p style="font-size:14px">
+                  <div>
+                  <p>
                     <span><strong>Recommendation(s)</strong></span>
                    
                     <p> @foreach($myplans as $myplan) <label > {!! strtoupper($myplan->action) !!}, </label> @endforeach.....................................................................................................................................................................................................................................................................................................................................................<br>........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................ </p>      
@@ -209,9 +257,60 @@
                   <br>
                   <p class="pull-right"> ............................................................................. <br> Medical Practitioner's Name : {{ $admission->referal_doctor  }} </p>
                   
-                  </section>
+                 
+
+                    </div>
+                    
+
+                </div>
+            </section>
+            <!-- invoice page end -->
+
+        </div>
+    </div>
+</div>
+<!-- END: Content-->
+
+<div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+
+<!-- END: Content-->
+
+{{-- <div class="sidenav-overlay"></div>
+<div class="drag-target"></div>
+
+
+          <section class="vbox bg-white">
+           <header class="header b-b b-light hidden-print">
+                <button href="#" class="btn btn-sm btn-info pull-right" onClick="window.print();">Print</button>
+                <p>NOTES</p>
+              </header>
+              
+              <section class="scrollable wrapper" id="summaryreport">
+                  <img src="/images/{{ $mycompany->logo }}" width="15%">
+                  <h4>{{$mycompany->legal_name }}</h4>
+                  <p><a href="#">{{ $mycompany->email }}</a></p>
+                   <p><a href="#">{{ $mycompany->address }}</a></p>
+                   <p><a href="#">{{ $mycompany->phone }}</a></p>
+                   <p><a href="#">{{ $mycompany->website }}</a></p>
+                  <br>
+              <div class="row">
+                <div class="col-xs-8">
                   
-                  </section>
+              
+                
+                 
+                </div>
+                <div class="col-xs-4 text-right">
+                <img src="data:image/png;base64,{{DNS2D::getBarcodePNG('$admission->opd_number', 'QRCODE')}}" alt="barcode" />     
+                  
+                     
+                </div>
+              </div>    
+
+                  
+                  </section> --}}
 
              
 @stop

@@ -738,7 +738,7 @@ class DoctorController extends Controller
 
         //dd($myhistories);
         $myros = ROS::where('visit_id' ,'=', $id)->first() ?: new ROS;
-        $mype = PatientPE::where('visit_id' ,'=', $id)->get();
+        $mype = PatientPE::where('visit_id' ,'=', $id)->first() ?: new ROS;
         $mydrugs = Prescription::where('visitid' ,'=', $id)->get();
         $mylabs = PatientInvestigation::where('visitid' ,'=', $id)->get();
         $mydiagnosis = PatientDiagnosis::where('visitid' ,'=', $id)->get();

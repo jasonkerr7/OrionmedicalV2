@@ -27,7 +27,7 @@
   {{-- <script src="{{ asset('/app-assets/js/scripts/pages/app-user.js')}}"></script>
   <script src="{{ asset('/app-assets/js/scripts/pages/user-profile.js')}}"></script> --}}
   <script src="{{ asset('/app-assets/js/scripts/extensions/toastr.js')}}"></script>
-  <script src="{{ asset('/app-assets/js/scripts/pages/invoice.js')}}"></script>
+  {{-- <script src="{{ asset('/app-assets/js/scripts/pages/invoice.js')}}"></script> --}}
   <script src="{{ asset('/app-assets/vendors/js/extensions/jquery.steps.min.js')}}"></script>
   <script src="{{ asset('/app-assets/js/scripts/forms/wizard-steps.js')}}"></script>
   <script src="{{ asset('/app-assets/vendors/js/forms/validation/jquery.validate.min.js')}}"></script>
@@ -71,7 +71,7 @@
   <!-- END: Theme JS-->
 
   <!-- BEGIN: Page JS-->
-   {{-- <script src="{{ asset('/app-assets/js/scripts/extensions/fullcalendar.js')}}"></script>  --}}
+  <script src="{{ asset('/app-assets/js/scripts/extensions/fullcalendar.js')}}"></script>  
 
   <!-- END: Page JS-->
 
