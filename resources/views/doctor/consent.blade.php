@@ -1,5 +1,15 @@
 @extends('layouts.default')
 @section('content')
+ <!-- BEGIN: Content-->
+ <div class="app-content content">
+  <div class="content-overlay"></div>
+  <div class="header-navbar-shadow"></div>
+  <div class="content-wrapper">
+      <div class="content-header row">
+          <div class="content-header-left col-md-9 col-12 mb-2">
+              <div class="row breadcrumbs-top">
+                  <div class="col-12">
+
           <section class="vbox bg-white">
            <header class="header b-b b-light hidden-print">
                 <button href="#" class="btn btn-sm btn-info pull-right" onClick="window.print();">Print</button>
@@ -64,4 +74,12 @@
           </section>
           <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen" data-target="#nav"></a>
         </section>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+ </div>
+ 
 @stop

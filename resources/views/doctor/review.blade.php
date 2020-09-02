@@ -50,10 +50,10 @@
                       <a class="dropdown-item"   href="tel:{{$patients[0]->mobile_number  }}">Call</a>
                         <a class="dropdown-item" href="https://wa.me/233{{ltrim($patients[0]->mobile_number,'0')}}?text=Hello {{ ucwords(strtolower($patients[0]->fullname)) }}." target="_new">Whatsapp</a>
                         <a class="dropdown-item" href="#">Video Call</a>
-                      <a class="dropdown-item" href="/print-visit-summary/{{ $visit_details->opd_number  }}">Print Clinical Note</a>
-                        <a class="dropdown-item" href="#">Print Cover Letter</a>
-                        <a class="dropdown-item" href="#">Print Excuse Duty</a>
-                        <a class="dropdown-item" href="#">Print Treatment  Letter</a>
+                      <a class="dropdown-item" href="/print-visit-summary/{{ $visit_details->opd_number }}">Print Clinical Note</a>
+                        <a class="dropdown-item" href="/print-executive-cover/{{ $visit_details->opd_number }}">Print Cover Letter</a>
+                        <a class="dropdown-item" href="/print-excuse-duty/{{ $visit_details->opd_number  }}">Print Excuse Duty</a>
+                        <a class="dropdown-item" href="/print-refusal-treatment">Print Refusal of Treatment Letter</a>
                       </div>
                   </div>
                   @role(['Nurse','Nurse Assistant','System Admin'])
@@ -3448,12 +3448,16 @@
                                                                 <div class="row">
                                                                     <div class="col-12">
                                                                         <fieldset class="form-label-group">
-                                                                            <textarea class="form-control" name="myreferal" id="myreferal" rows="3" placeholder="Enter referal text"></textarea>
+                                                                            <textarea class="form-control text-left" name="myreferal" id="myreferal" rows="10" placeholder="Enter referal text">
+                                                                              @foreach($referals as $note)
+                                                                              {!!$note->content!!}
+                                                                            @endforeach
+                                                                            </textarea>
                                                                             <label for="label-textarea">Referal Note</label>
                                                                         </fieldset>
                                                                     </div>
                                                                 </div>
-                                                                <button type="submit" class="btn btn-primary mr-1 mb-1 float-right">Save</button>
+                                                                <button type="button" onclick="addPlanReferal()" class="btn btn-primary mr-1 mb-1 float-right">Save</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -4379,7 +4383,7 @@ function updateCareStatus(id,status)
 
 function addPlanReferal()
 {
-if($('#myreferal').html()!= "")
+if($('#myreferal').val()!= "")
 {
 
   //alert($('#complaint').val());
@@ -4387,7 +4391,7 @@ if($('#myreferal').html()!= "")
         {
           "opd_number": $('#opd_number').val(),
           "patient_id": $('#patient_id').val(),
-          "referal_note": $('#myreferal').html()
+          "referal_note": $('#myreferal').val()
                          
         },
         function(data)
@@ -4397,19 +4401,22 @@ if($('#myreferal').html()!= "")
         if(data["OK"])
         {
           
-           sweetAlert("Note saved successfully!");
+          toastr.success("Note saved successfully!", 'Saved!', { positionClass: 'toast-top-full-width', });
           loadAssessment();
         }
         else
         {
-          sweetAlert("Assessment failed to be added!");
+          toastr.error("Assessment failed to be added!", 'Error', { positionClass: 'toast-top-full-width', });
         }
       });
                                         
         },'json');
   }
   else
-    {sweetAlert("Please add an assessment!");}
+    {
+      toastr.error("Please add an assessment!", 'Error', { positionClass: 'toast-top-full-width', });
+    
+    }
 }
 
 
@@ -5348,6 +5355,35 @@ function loadVitals()
                                           
          },'json');      
     }
+
+    function removeTreatment(id)
+   {
+      
+          $.get('/delete-treatment-sheet',
+          {
+             "ID": id 
+          },
+          function(data)
+          { 
+            
+            $.each(data, function (key, value) 
+            {
+            if(value == "OK")
+            {
+              //swal("Deleted!", name +" was removed from history list.", "success"); 
+              loadTreatmentPlan();
+             }
+            else
+            { 
+              swal("Cancelled", name +" failed to be removed from history.", "error");
+              
+            }
+           
+        });
+                                          
+          },'json');    
+           
+   }
 
 
 

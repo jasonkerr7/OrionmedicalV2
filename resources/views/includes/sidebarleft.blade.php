@@ -5,7 +5,7 @@
           <ul class="nav navbar-nav flex-row">
               <li class="nav-item mr-auto"><a class="navbar-brand" href="../../../html/ltr/vertical-collapsed-menu-template/index.html">
                       {{-- <div class="brand-logo"></div> --}}
-                      <img src="/images/glogo.png"  width="50px" height="50px" alt="branding logo">
+                      {{-- <img src="/images/glogo.png"  width="50px" height="50px" alt="branding logo"> --}}
                       <h2 class="brand-text mb-0">{{ $mycompany->name }}</h2>
                   </a></li>
               <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"></i><i class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block collapse-toggle-icon primary" data-ticon="icon-disc"></i></a></li>

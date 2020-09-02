@@ -64,7 +64,7 @@
                                                                     <td>{{ $user->location }}</td>
                                                                     <td>{{ $user->usertype }}</td>
                                                                     <td>{{ $user->created_at }}</td>
-                                                                    <td><a href="/edit-user/{{ $user->id }}" data-toggle="modal" alt="edit"><i class="fa fa-pencil"></i></a></td>
+                                                                    <td><a href="/edit-user/{{ $user->id }}" alt="edit"><i class="fa fa-pencil"></i></a></td>
                                                                     <td><a href="#" onclick="deleteUser('{{ $user->id }}','{{ $user->fullname }}')" ><i class="fa fa-trash"></i></a></td>
                                                                     </tr>
                                                                  @endforeach

@@ -251,19 +251,20 @@ function doDelete(id,name)
   {
 
          
-      swal({   
-        title: "Are you sure?",   
-        text: "Do you want to delete "+name+" ?",   
-        type: "warning",   
-        showCancelButton: true,   
-        confirmButtonColor: "#DD6B55",   
-        confirmButtonText: "Yes, delete it!",   
-        cancelButtonText: "No, cancel !",   
-        closeOnConfirm: false,   
-        closeOnCancel: false }, 
-        function(isConfirm){   
-          if (isConfirm) 
-          { 
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      confirmButtonClass: 'btn btn-primary',
+      cancelButtonClass: 'btn btn-danger ml-1',
+      buttonsStyling: false,
+        }).then(function (result) {
+      if (result.value) 
+      { 
           $.get('/delete-opd',
           {
              "ID": id 
@@ -275,12 +276,12 @@ function doDelete(id,name)
             {
             if(value == "OK")
             {
-              swal("Deleted!", name +" was successfully deleted.", "success"); 
+              Swal.fire("Deleted!", name +" was successfully deleted.", "success"); 
               location.reload(true);
              }
             else
             { 
-              swal("Cancelled", name +" failed to delete.", "error");
+              Swal.fire("Cancelled", name +" failed to delete.", "error");
               
             }
            
@@ -290,7 +291,7 @@ function doDelete(id,name)
            
              } 
         else {     
-          swal("Cancelled", name +" failed to delete.", "error");   
+          Swal.fire("Cancelled", name +" failed to delete.", "error");   
         } });
 
   }
@@ -300,20 +301,20 @@ function doDelete(id,name)
   function doDischarge(id,name)
   {
 
-         
-      swal({   
-        title: "Discharging " + name +"!",  
-        text: "Do you want to discharge "+name+" ?",   
-        type: "warning",   
-        showCancelButton: true,   
-        confirmButtonColor: "#DD6B55",   
-        confirmButtonText: "Yes, discharge!",   
-        cancelButtonText: "No, cancel !",   
-        closeOnConfirm: false,   
-        closeOnCancel: false }, 
-        function(isConfirm){   
-          if (isConfirm) 
-          { 
+      Swal.fire({
+      title: 'Are you sure you want to discharge ' + name +"!",
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, discharge client!',
+      confirmButtonClass: 'btn btn-primary',
+      cancelButtonClass: 'btn btn-danger ml-1',
+      buttonsStyling: false,
+        }).then(function (result) {
+      if (result.value) 
+      { 
           $.get('/discharge-opd',
           {
              "ID": id 
@@ -325,12 +326,12 @@ function doDelete(id,name)
             {
             if(value == "OK")
             {
-              swal("Discharged!", name +" was successfully deleted.", "success"); 
+              Swal.fire("Discharged!", name +" was successfully discharged.", "success"); 
               location.reload(true);
              }
             else
             { 
-              swal("Cancelled", name +" failed to delete.", "error");
+              Swal.fire("Cancelled", name +" failed to discharged.", "error");
               
             }
            
@@ -340,7 +341,7 @@ function doDelete(id,name)
            
              } 
         else {     
-          swal("Cancelled", name +" failed to delete.", "error");   
+          Swal.fire("Cancelled", name +" failed to discharged.", "error");   
         } });
 
   }
