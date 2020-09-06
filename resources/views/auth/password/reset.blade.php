@@ -1,6 +1,11 @@
-@extends('layouts.app')
-
+@extends('layouts.default')
 @section('content')
+
+<div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper">
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -67,4 +72,7 @@
         </div>
     </div>
 </div>
-@endsection
+    </div>
+</div>
+
+@stop

@@ -173,7 +173,7 @@ background: rgba(0, 0, 0, 0) url("https://img.zohostatic.com/iam/m4006.17/images
 <div style="margin-top: 10px;">For your security, we recommend that you don't reuse passwords associated with your email address or any other type of account. Additionally, if you enter your original password as your new password, you may trigger an error message. Create an entirely new password from the default given</div>
 
 <div style="clear: both;margin-top: 50px;">
-<a href="/password/email" target="_blank" class="saveBtn">Set up password</a>
+<a href="/password/reset" target="_blank" class="saveBtn">Set up password</a>
 <input type="hidden" name="_token" value="{{ Session::token() }}">
 <a href="#" class="cancelBtn">Remind me Later</a>
 </div>
