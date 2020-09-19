@@ -56,7 +56,7 @@
                                                           </div>
                                                       </fieldset>
                                                   </div>
-                                                  <div class="text-right"><a href="auth-forgot-password.html" class="card-link">Forgot Password?</a></div>
+                                                  <div class="text-right"><a href="/password/reset" class="card-link">Forgot Password?</a></div>
                                               </div>
                                               <a href="auth-register.html" class="btn btn-outline-primary float-left btn-inline">Register</a>
                                               <input type="hidden" name="_token" value="{{ Session::token() }}">
